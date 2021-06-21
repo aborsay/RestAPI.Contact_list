@@ -18,4 +18,7 @@ Added StreetSecond to the Contact.class as I have an apartment and thought that 
 <i>Thanks to Spring.io, attacomsian.com, and likely other random pages for giving me pointers.</i>
 
 <h2>June 6, 2021</h2>
+Commit to add blank streetSecond
+
+<h2>June 6, 2021</h2>
 First Commit everything has been tested except for the individual updating of the contacts.

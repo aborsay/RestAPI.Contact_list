@@ -228,8 +228,9 @@ public class ContactController {
      */
     private ObjectNode getContactAddress(Contact contact){
         ObjectNode address = mapper.createObjectNode();
-        address.put("street", contact.getStreet()).put("city",contact.getCity())
-                .put("state",contact.getState()).put("zip",contact.getZip());
+        address.put("street", contact.getStreet()).put("streetSecond",contact.getStreetSecond())
+                .put("city",contact.getCity()).put("state",contact.getState())
+                .put("zip",contact.getZip());
         return address;
     }
 
