@@ -91,6 +91,8 @@ public class ContactController {
         if(contactNode.has("address")){
             newContact.setStreet(contactNode.get("address").has("street")
                     ? contactNode.get("address").get("street").asText() : "");
+            newContact.setStreet(contactNode.get("address").has("streetSecond")
+                    ? contactNode.get("address").get("streetSecond").asText() : "");
             newContact.setCity(contactNode.get("address").has("city")
                     ? contactNode.get("address").get("city").asText() : "");
             newContact.setState(contactNode.get("address").has("state")
