@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 public class ContactController {
@@ -199,18 +198,17 @@ public class ContactController {
 
         if(contact.getPrimaryPhoneType().equals("home")){
             contactObject.put("phone", contact.getPrimaryPhone());
-
         }
+        //this was added as you could possibly have two home phones and thus no other phone
         if(contact.getSecondaryPhoneType().equals("home")){
             contactObject.put("phone secondary", contact.getSecondaryPhone());
-
         }
 
         return contactObject;
     }
 
     /**
-     * Returns name node from a contact
+     * Returns name node from a contact.
      * @param contact individual contact
      * @return return  name as ObjectNode
      */
@@ -264,6 +262,14 @@ public class ContactController {
         return contactObject;
     }
 
+    /**
+     * This part is not been tested and am thus needs some attention.
+     * I had done some testing with the idea in a smaller contact object without the nested JSON and it worked.
+     * However, not sure about this one.
+     * @param newContactString string to update or add
+     * @param id matching the id of the current contact
+     * @return updated contact
+     */
     @PutMapping("/contacts/{id}")
     Contact replaceContact(@RequestBody String newContactString, @PathVariable Long id) {
         if(isJSONValid(newContactString)) {
@@ -276,26 +282,39 @@ public class ContactController {
             }
 
             assert contactNode != null;
-            return addNewContact(contactNode);
+            Contact tempContact = addNewContact(contactNode);
+            return repository.findById(id)
+                    .map(Contact -> {
+                        if(tempContact!=null) {
+                            Contact.setFirst(tempContact.getFirst());
+                            Contact.setMiddle(tempContact.getMiddle());
+                            Contact.setLast(tempContact.getLast());
+                            Contact.setStreet(tempContact.getStreet());
+                            Contact.setCity(tempContact.getCity());
+                            Contact.setState(tempContact.getState());
+                            Contact.setZip(tempContact.getZip());
+                            Contact.setPrimaryPhone(tempContact.getPrimaryPhone());
+                            Contact.setPrimaryPhoneType(tempContact.getPrimaryPhoneType());
+                            Contact.setSecondaryPhone(tempContact.getSecondaryPhone());
+                            Contact.setSecondaryPhoneType(tempContact.getSecondaryPhoneType());
+                            Contact.setEmail(tempContact.getEmail());
+                        }
+
+                        return repository.save(Contact);
+                    })
+                    .orElseGet(() -> {
+                        assert tempContact != null;
+                        return repository.save(tempContact);
+                    });
         }
         return null;
-
-        /*
-        return repository.findById(id)
-                .map(Contact -> {
-                    // Contact.setName(newContact.getName());
-                    // Contact.setRole(newContact.getRole());
-                    return repository.save(Contact);
-                })
-                .orElseGet(() -> {
-                    newContact.setId(id);
-                    return repository.save(newContact);
-                });
-        }
-
-         */
     }
 
+    /**
+     * not been tested but should work. I tested this in a smaller starting contacts, but have not tested in the this
+     * larger contact object
+     * @param id of the contact to delete
+     */
     @DeleteMapping("/contacts/{id}")
     void deleteContact(@PathVariable Long id) {
         repository.deleteById(id);
