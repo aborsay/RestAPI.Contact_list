@@ -33,7 +33,7 @@ Add a standalone database rather then a memory based one, thus allowing changes 
 <h3>Added:</h3>
 Added StreetSecond to the Contact.class as I have an apartment and thought that would be the proper way for a contact. It is just addded but no data in it.<br/><br/>
 
-<i>Was excited to use Java again. It has been some time. Was able to learn about Spring.</i><br/>
+<i>Was excited to use Java again. <br/>It has been some time. I may consider looking into Java certification to learn more beyond the Android coding I have done in the past. Was able to learn about Spring.</i><br/>
 <i>Thanks to Spring.io, attacomsian.com, and likely other random pages for giving me pointers.</i>
 
 <h2>June 6, 2021</h2>
